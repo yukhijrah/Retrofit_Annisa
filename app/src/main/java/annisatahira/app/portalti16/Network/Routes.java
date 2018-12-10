@@ -22,13 +22,13 @@ public interface Routes {
      * https://ti16.herokuapp.com/list.php
      * */
 
-    @GET("list.php")
+    @GET("dev/list_mahasiswa")
     Call<DaftarMahasiswa> getMahasiswa();
 
-    @POST("add.php")
+    @POST("dev/insert_mahasiswa")
     @FormUrlEncoded
     Call<Mahasiswa> postMahasiswa(
-            @Field("nama") String nama,
+            @Field("name") String nama,
             @Field("nim") String nim
             );
 }

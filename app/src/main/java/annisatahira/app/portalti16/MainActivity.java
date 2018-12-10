@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity{
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         lstMahasiswa.setLayoutManager(linearLayoutManager);
 
-        requestDaftarMahasiswa();
+        //requestDaftarMahasiswa();
     }
 
     @Override
