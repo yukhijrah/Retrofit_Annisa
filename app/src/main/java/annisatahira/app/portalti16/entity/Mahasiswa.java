@@ -6,14 +6,19 @@ package annisatahira.app.portalti16.entity;
 
 public class Mahasiswa {
 
-    private String nama;
+    private String name;
     private String nim;
+    private int id;
 
-    public String getNama() {
-        return nama;
+    public String getName() {
+        return name;
     }
 
     public String getNim() {
         return nim;
+    }
+
+    public int getId() {
+        return id;
     }
 }
