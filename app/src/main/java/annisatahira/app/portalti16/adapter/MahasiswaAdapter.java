@@ -1,5 +1,8 @@
 package annisatahira.app.portalti16.adapter;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.NetworkInfo;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,9 +10,13 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
+import annisatahira.app.portalti16.DetailMahasiswaActivity;
 import annisatahira.app.portalti16.R;
 import annisatahira.app.portalti16.entity.Mahasiswa;
 import annisatahira.app.portalti16.holder.MahasiswaHolder;
+import annisatahira.app.portalti16.util.Consts;
+
+import static android.R.attr.name;
 
 /**
  * Created by annisatahira on 26/11/18.
@@ -31,7 +38,22 @@ public class MahasiswaAdapter extends RecyclerView.Adapter<MahasiswaHolder>{
     @Override
     public MahasiswaHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mahasiswa, parent, false);
-        MahasiswaHolder holder = new MahasiswaHolder(view);
+        final MahasiswaHolder holder = new MahasiswaHolder(view);
+
+        final Context context = holder.itemView.getContext();
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //definisikan position untuk getMahasiswa.
+                int adapterPosition = holder.getAdapterPosition();
+                Mahasiswa mahasiswa = mahasiswas.get(adapterPosition);
+                Intent detailIntent = new Intent(context, DetailMahasiswaActivity.class);
+                detailIntent.putExtra("mahasiswa", mahasiswa);
+                detailIntent.putExtra(Consts.KEY_ACTION_DETAIL, Consts.INTENT_EDIT);
+                context.startActivity(detailIntent);
+            }
+        });
+
         return holder;
     }
 

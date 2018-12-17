@@ -1,6 +1,5 @@
 package annisatahira.app.portalti16;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -10,14 +9,13 @@ import android.widget.Toast;
 
 import annisatahira.app.portalti16.Network.Network;
 import annisatahira.app.portalti16.Network.Routes;
-import annisatahira.app.portalti16.entity.DaftarMahasiswa;
 import annisatahira.app.portalti16.entity.Mahasiswa;
-import okhttp3.Route;
+import annisatahira.app.portalti16.util.Consts;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AddMahasiswaActivity extends AppCompatActivity {
+public class DetailMahasiswaActivity extends AppCompatActivity {
 
     private EditText edtName, edtNim;
     private Button btnAdd;
@@ -25,20 +23,37 @@ public class AddMahasiswaActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_mahasiswa);
+        setContentView(R.layout.activity_detail_mahasiswa);
         //casting untuk semua view
         edtName = (EditText) findViewById(R.id.edt_name);
         edtNim = (EditText) findViewById(R.id.edt_nim);
         btnAdd = (Button) findViewById(R.id.btn_add);
 
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String name = edtName.getText().toString();
-                String nim = edtNim.getText().toString();
-                addNewMahasiswa(name, nim);
-            }
-        });
+        String action = getIntent().getStringExtra(Consts.KEY_ACTION_DETAIL);
+        switch (action) {
+            case Consts.INTENT_ADD:
+                btnAdd.setText("TAMBAH MAHASISWA");
+                btnAdd.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String name = edtName.getText().toString();
+                        String nim = edtNim.getText().toString();
+                        addNewMahasiswa(name, nim);
+                    }
+                });
+                break;
+            case Consts.INTENT_EDIT:
+                Mahasiswa mahasiswa = (Mahasiswa) getIntent().getSerializableExtra("mahasiswa");
+                edtName.setText(mahasiswa.getName());
+                edtNim.setText(mahasiswa.getNim());
+                btnAdd.setText("UPDATE DATA");
+                btnAdd.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    }
+                });
+                break;
+        }
     }
 
     private void addNewMahasiswa(String name, String nim) {
@@ -63,7 +78,7 @@ public class AddMahasiswaActivity extends AppCompatActivity {
 
     }
     private void onErrorMahasiswa() {
-        Toast.makeText(AddMahasiswaActivity.this,
+        Toast.makeText(DetailMahasiswaActivity.this,
                 "Maaf, terjadi kesalahan",
                 Toast.LENGTH_SHORT).show();
     }
