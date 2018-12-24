@@ -47,6 +47,7 @@ public class MahasiswaAdapter extends RecyclerView.Adapter<MahasiswaHolder>{
                 //definisikan position untuk getMahasiswa.
                 int adapterPosition = holder.getAdapterPosition();
                 Mahasiswa mahasiswa = mahasiswas.get(adapterPosition);
+
                 Intent detailIntent = new Intent(context, DetailMahasiswaActivity.class);
                 detailIntent.putExtra("mahasiswa", mahasiswa);
                 detailIntent.putExtra(Consts.KEY_ACTION_DETAIL, Consts.INTENT_EDIT);

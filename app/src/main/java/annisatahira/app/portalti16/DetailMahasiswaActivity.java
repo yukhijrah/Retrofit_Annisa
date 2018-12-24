@@ -11,9 +11,12 @@ import annisatahira.app.portalti16.Network.Network;
 import annisatahira.app.portalti16.Network.Routes;
 import annisatahira.app.portalti16.entity.Mahasiswa;
 import annisatahira.app.portalti16.util.Consts;
+import okhttp3.Route;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static annisatahira.app.portalti16.R.id.text;
 
 public class DetailMahasiswaActivity extends AppCompatActivity {
 
@@ -38,22 +41,60 @@ public class DetailMahasiswaActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         String name = edtName.getText().toString();
                         String nim = edtNim.getText().toString();
-                        addNewMahasiswa(name, nim);
+                        if (!name.isEmpty() && !nim.isEmpty()) {
+                            addNewMahasiswa(name, nim);
+                        } else {
+                            Toast.makeText(DetailMahasiswaActivity.this,
+                            "Maaf nama dan nim tidak boleh kosong",
+                                    Toast.LENGTH_SHORT).show();
+                        
+                        }
                     }
                 });
                 break;
             case Consts.INTENT_EDIT:
-                Mahasiswa mahasiswa = (Mahasiswa) getIntent().getSerializableExtra("mahasiswa");
+                final Mahasiswa mahasiswa = (Mahasiswa) getIntent().getSerializableExtra("mahasiswa");
                 edtName.setText(mahasiswa.getName());
                 edtNim.setText(mahasiswa.getNim());
+
                 btnAdd.setText("UPDATE DATA");
                 btnAdd.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        mahasiswa.setName(edtName.getText().toString());
+                        mahasiswa.setNim(edtNim.getText().toString());
+                        updateMahasiswa(mahasiswa);
                     }
                 });
                 break;
         }
+    }
+
+    private void updateMahasiswa(Mahasiswa mahasiswa) {
+        Routes services = Network.request().create(Routes.class);
+
+        String mahasiswaId = String.valueOf(mahasiswa.getId());
+        String name = mahasiswa.getName();
+        String nim = mahasiswa.getNim();
+
+        services.updateMahasiswa(mahasiswaId, name, nim).enqueue(new Callback<Mahasiswa>() {
+            @Override
+            public void onResponse(Call<Mahasiswa> call, Response<Mahasiswa> response) {
+                if(response.isSuccessful()) {
+                    Toast.makeText( DetailMahasiswaActivity.this,
+                           "update berhasil",
+                            Toast.LENGTH_LONG).show();
+                    finish();
+                } else {
+                    onErrorMahasiswa();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Mahasiswa> call, Throwable t) {
+                onErrorMahasiswa();
+            }
+        });
     }
 
     private void addNewMahasiswa(String name, String nim) {
