@@ -71,6 +71,14 @@ public class MahasiswaAdapter extends RecyclerView.Adapter<MahasiswaHolder>{
             }
         });
 
+        //fungsi favorite
+        holder.btnFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onFavorite(mahasiswas.get(position));
+            }
+        });
+
     }
 
     @Override
@@ -80,5 +88,6 @@ public class MahasiswaAdapter extends RecyclerView.Adapter<MahasiswaHolder>{
 
     public interface MahasiswaListener{
         void onDelete(int mhsId);
+        void onFavorite(Mahasiswa mahasiswa);
     }
 }

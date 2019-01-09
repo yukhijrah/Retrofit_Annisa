@@ -25,10 +25,13 @@ public class MahasiswaRepository {
         ).build();
     }
 
-    public void insertMahasiswa(final Mahasiswa mahasiswa) {
+    public void insertMahasiswa(final String name, final String nim) {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
+                Mahasiswa mahasiswa = new Mahasiswa();
+                mahasiswa.setName(name);
+                mahasiswa.setNim(nim);
                 mahasiswaDatabase.mahasiswaDao().insert(mahasiswa);
                 return null;
             }
